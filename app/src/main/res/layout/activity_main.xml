@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchParentStyle"
+    tools:context="com.example.utente.newsapp.MainActivity">
+
+    <ListView
+        android:id="@+id/news_item"
+        style="@style/MatchParentStyle"
+        android:divider="@null"
+        android:dividerHeight="@dimen/zero"
+        android:orientation="vertical" />
+
+    <ProgressBar
+        android:id="@+id/loading_line"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="@dimen/twohund"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true" />
+
+    <TextView
+        android:id="@+id/no_news"
+        style="@style/WrapContentStyle"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>
