@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/WrapperStyle">
+
+    <LinearLayout
+        android:id="@+id/section_wrapper"
+        style="@style/SectionWrapperStyle">
+
+        <TextView
+            android:id="@+id/article_section"
+            style="@style/NewsSectionStyle"
+            tools:text="Tecnologia" />
+
+        <LinearLayout
+            android:id="@+id/date_wrapper"
+            style="@style/DateWrapperStyle">
+
+            <TextView
+                android:id="@+id/article_date"
+                style="@style/ArticleDateStyle"
+                tools:text="Ago 03, 2018" />
+
+            <TextView
+                android:id="@+id/time"
+                style="@style/TimeStyle"
+                tools:text="5:00 PM" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/image_wrapper"
+        style="@style/ImageWrapperStyle">
+
+        <ImageView
+            android:id="@+id/illustration"
+            style="@style/ImageListStyle"
+            android:contentDescription="@string/illustration" />
+
+        <TextView
+            android:id="@+id/article_title"
+            style="@style/TitleStyle"
+            tools:text="Notizia campione" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/article_author"
+        style="@style/AuthorStyle"
+        tools:text="Gennaro De Luca" />
+</LinearLayout>

@@ -5,13 +5,13 @@ import android.content.Context;
 
 import java.util.List;
 
-public class NewsLoader extends AsyncTaskLoader<List<News>> {
+class NewsLoader extends AsyncTaskLoader<List<News>> {
 
-    private static String REQUEST_URL =
-            "http://content.guardianapis.com/search?show-tags=contributor&api-key=test";
+    private final String queryUrl;
 
-    public NewsLoader(Context context) {
+    public NewsLoader(Context context, String url) {
         super(context);
+        queryUrl = url;
     }
 
     @Override
@@ -21,11 +21,10 @@ public class NewsLoader extends AsyncTaskLoader<List<News>> {
 
     @Override
     public List<News> loadInBackground() {
-        if (REQUEST_URL == null) {
+        if (queryUrl == null) {
             return null;
         }
 
-        List<News> news_on_list = QueryUtils.fetchNewsData(REQUEST_URL);
-        return news_on_list;
+        return QueryUtils.fetchNewsData(queryUrl);
     }
 }

@@ -1,37 +1,51 @@
 package com.example.utente.newsapp;
 
-public class News {
-    private String mArticleTitle;
-    private String mArticleCategory;
-    private String mArticleDate;
-    private String mArticleUrl;
-    private String mArticleAuthor;
+import java.util.Date;
 
-    public News(String mArticleTitle, String mArticleCategory, String mArticleDate, String mArticleUrl, String mArticleAuthor) {
-        this.mArticleTitle = mArticleTitle;
-        this.mArticleCategory = mArticleCategory;
-        this.mArticleDate = mArticleDate;
-        this.mArticleUrl = mArticleUrl;
-        this.mArticleAuthor = mArticleAuthor;
+class News {
+
+    private final String mArticleTitle;
+
+    private final String mArticleSection;
+
+    private final String mArticleAuthor;
+
+    private final Date mArticleDate;
+
+    private final String mArticleUrl;
+
+    private final String mArticleImage;
+
+    public News(String title, String section, String journalist, Date publication, String url, String pic) {
+        mArticleTitle = title;
+        mArticleSection = section;
+        mArticleAuthor = journalist;
+        mArticleDate = publication;
+        mArticleUrl = url;
+        mArticleImage = pic;
     }
 
-    public String getmArticleTitle() {
+    public String getArticleTitle() {
         return mArticleTitle;
     }
 
-    public String getmArticleCategory() {
-        return mArticleCategory;
+    public String getArticleSection() {
+        return mArticleSection;
     }
 
-    public String getmArticleDate() {
+    public String getArticleAuthor() {
+        return mArticleAuthor;
+    }
+
+    public Date getArticleDate() {
         return mArticleDate;
     }
 
-    public String getmArticleUrl() {
+    public String getArticleUrl() {
         return mArticleUrl;
     }
 
-    public String getmArticleAuthor() {
-        return mArticleAuthor;
+    public String getArticleImage() {
+        return mArticleImage;
     }
 }

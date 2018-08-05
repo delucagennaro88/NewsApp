@@ -3,6 +3,7 @@ package com.example.utente.newsapp;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,79 +16,82 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class QueryUtils {
+final class QueryUtils {
+
+    private static final String LOG_TAG = QueryUtils.class.getSimpleName();
+
     private QueryUtils() {
     }
 
     public static List<News> fetchNewsData(String requestUrl) {
-        URL url = createUrl(requestUrl);
 
-        String jsonBack = null;
+        URL articleUrl = createUrl(requestUrl);
+
+        String jsonResponse = null;
         try {
-            jsonBack = makeHttpRequest(url);
+            jsonResponse = makeHttpRequest(articleUrl);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, "Problema con la richiesta HTTP.", e);
         }
 
-        List<News> news_on_list = extractFeatureFromJson(jsonBack);
-
-        return news_on_list;
+        return extractFeatureFromJson(jsonResponse);
     }
 
     private static URL createUrl(String stringUrl) {
-        URL url = null;
+        URL articleUrl = null;
         try {
-            url = new URL(stringUrl);
+            articleUrl = new URL(stringUrl);
         } catch (MalformedURLException e) {
-
-            e.printStackTrace();
+            Log.e(LOG_TAG, "Problema con URL ", e);
         }
-        return url;
+        return articleUrl;
     }
 
-    private static String makeHttpRequest(URL url) throws IOException {
-        String jsonBack = "";
+    private static String makeHttpRequest(URL articleUrl) throws IOException {
+        String jsonResponse = "";
 
-        if (url == null) {
-            return jsonBack;
+        if (articleUrl == null) {
+            return jsonResponse;
         }
 
-        HttpURLConnection connectURL = null;
-        InputStream stream = null;
+        HttpURLConnection urlConnection = null;
+        InputStream inputStream = null;
         try {
-            connectURL = (HttpURLConnection) url.openConnection();
-            connectURL.setReadTimeout(10000 /* milliseconds */);
-            connectURL.setConnectTimeout(15000 /* milliseconds */);
-            connectURL.setRequestMethod("GET");
-            connectURL.connect();
+            urlConnection = (HttpURLConnection) articleUrl.openConnection();
+            urlConnection.setReadTimeout(10000 /* milliseconds */);
+            urlConnection.setConnectTimeout(15000 /* milliseconds */);
+            urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
 
-            if (connectURL.getResponseCode() == 200) {
-                stream = connectURL.getInputStream();
-                jsonBack = read(stream);
+            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                inputStream = urlConnection.getInputStream();
+                jsonResponse = readFromStream(inputStream);
             } else {
-                Log.d("Errore: ", String.valueOf(connectURL.getResponseCode()));
+                Log.e(LOG_TAG, "Errore: " + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, "Problema con JSON.", e);
         } finally {
-            if (connectURL != null) {
-                connectURL.disconnect();
+            if (urlConnection != null) {
+                urlConnection.disconnect();
             }
-            if (stream != null) {
+            if (inputStream != null) {
 
-                stream.close();
+                inputStream.close();
             }
         }
-        return jsonBack;
+        return jsonResponse;
     }
 
-    private static String read(InputStream stream) throws IOException {
+    private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
-        if (stream != null) {
-            InputStreamReader inputStreamReader = new InputStreamReader(stream, Charset.forName("UTF-8"));
+        if (inputStream != null) {
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
             BufferedReader reader = new BufferedReader(inputStreamReader);
             String line = reader.readLine();
             while (line != null) {
@@ -99,45 +103,69 @@ public class QueryUtils {
     }
 
     private static List<News> extractFeatureFromJson(String newsJSON) {
+
         if (TextUtils.isEmpty(newsJSON)) {
             return null;
         }
 
-        List<News> news_on_list = new ArrayList<>();
+        List<News> articleList = new ArrayList<>();
 
         try {
-
             JSONObject baseJsonResponse = new JSONObject(newsJSON);
-            JSONObject response = baseJsonResponse.getJSONObject("response");
-            JSONArray resultsArray = response.getJSONArray("results");
 
-            for (int i = 0; i < resultsArray.length(); i++) {
+            JSONArray newsArray = baseJsonResponse.getJSONObject("response").getJSONArray("results");
 
-                JSONObject currentResults = resultsArray.getJSONObject(i);
+            for (int i = 0; i < newsArray.length(); i++) {
 
-                String Title = currentResults.getString("webTitle");
-                String category = currentResults.getString("sectionName");
-                String date = currentResults.getString("webPublicationDate");
-                String url = currentResults.getString("webUrl");
-                JSONArray tagsauthor = currentResults.getJSONArray("tags");
-                String author="";
-                if (tagsauthor.length()!= 0) {
-                    JSONObject currenttagsauthor = tagsauthor.getJSONObject(0);
-                    author = currenttagsauthor.getString("webTitle");
-                }else{
-                    author = "No Author ..";
+                JSONObject currentNews = newsArray.getJSONObject(i);
+
+                String articleTitle = currentNews.getString("webTitle");
+
+                String articleSection = currentNews.getString("sectionName");
+
+                JSONArray tags = currentNews.getJSONArray("tags");
+
+                String articleAuthor = "";
+                if (!tags.isNull(0)) {
+                    JSONObject currentTag = tags.getJSONObject(0);
+
+                    String authorFirstName = !currentTag.isNull("firstName") ? currentTag.getString("firstName") : "";
+
+                    String authorLastName = !currentTag.isNull("lastName") ? currentTag.getString("lastName") : "";
+
+                    articleAuthor = StringUtils.capitalize(authorFirstName.toLowerCase().trim()) + " " + StringUtils.capitalize(authorLastName.toLowerCase().trim());
+                    if (authorFirstName.trim() != "" || authorLastName.trim() != "") {
+                        articleAuthor = ("Author: ").concat(articleAuthor);
+                    } else {
+                        articleAuthor = "";
+                    }
                 }
 
-                News news = new News(Title, category, date, url, author);
+                String originaleArticleDate = currentNews.getString("webPublicationDate");
 
-                news_on_list.add(news);
+                Date articleDate = null;
+                try {
+                    articleDate = (new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")).parse(originaleArticleDate);
+                } catch (Exception e) {
+
+                    Log.e("QueryUtils", "Problema con la data", e);
+                }
+
+                String articleUrl = currentNews.getString("webUrl");
+
+                String articlePic = currentNews.getJSONObject("fields").getString("thumbnail");
+                if (articlePic == "") {
+                    articlePic = "http://via.placeholder.com/500x500";
+                }
+
+                News news = new News(articleTitle, articleSection, articleAuthor, articleDate, articleUrl, articlePic);
+
+                articleList.add(news);
             }
-
         } catch (JSONException e) {
-
-            e.printStackTrace();
+            Log.e("QueryUtils", "Problema con JSON", e);
         }
 
-        return news_on_list;
+        return articleList;
     }
 }

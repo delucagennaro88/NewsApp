@@ -1,5 +1,19 @@
 <resources>
+
     <string name="app_name">News App</string>
-    <string name="errorconnection">Che peccato! Internet non va\nVerifica la connessione e riprova</string>
-    <string name="contenterror">Cosa succede?\nInternet non va\nVerifica la connessione e riprova</string>
+    <string name="no_articles">Niente di nuovo.</string>
+    <string name="error_connection">Connessione Internet assente.</string>
+    <string name="illustration">Immagine</string>
+    <string name="menu_item">Settings</string>
+    <string name="title">Notizie</string>
+    <string name="title_label">Cerca</string>
+    <string name="title_key" translatable="false">title</string>
+    <string name="title_default" translatable="false">italy</string>
+    <string name="order_by_label">Ordina</string>
+    <string name="order_by_key" translatable="false">order_by</string>
+    <string name="order_by_default" translatable="false">@string/order_by_relevance_value</string>
+    <string name="order_by_relevance_label">Rilevanza</string>
+    <string name="order_by_relevance_value" translatable="false">relevance</string>
+    <string name="order_by_newest_label">Più recenti</string>
+    <string name="order_by_newest_value" translatable="false">newest</string>
 </resources>

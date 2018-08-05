@@ -3,9 +3,14 @@
 
     <dimen name="zero">0dp</dimen>
     <dimen name="one">1dp</dimen>
+    <dimen name="four">4dp</dimen>
+    <dimen name="eight">8dp</dimen>
     <dimen name="ten">10dp</dimen>
     <dimen name="sixteen">16dp</dimen>
+    <dimen name="fifty">50dp</dimen>
     <dimen name="twohund">200dp</dimen>
 
+    <dimen name="twelvestr">12sp</dimen>
     <dimen name="fifteenstr">15sp</dimen>
+    <dimen name="sixteenstr">16sp</dimen>
 </resources>

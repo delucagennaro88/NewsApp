@@ -1,41 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="ItemStyle">
+    <style name="ListStyle">
+        <item name="android:orientation">vertical</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
+        <item name="android:divider">@color/dividerColor</item>
+        <item name="android:dividerHeight">@dimen/one</item>
+    </style>
+
+    <style name="WrapperStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:padding">@dimen/sixteen</item>
+        <item name="android:paddingLeft">@dimen/sixteen</item>
+        <item name="android:paddingRight">@dimen/sixteen</item>
+    </style>
+
+    <style name="SectionWrapperStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingTop">@dimen/sixteen</item>
+        <item name="android:weightSum">6</item>
+    </style>
+
+    <style name="NewsSectionStyle">
+        <item name="android:layout_width">@dimen/zero</item>
+        <item name="android:layout_weight">3</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/sixteenstr</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="DateWrapperStyle">
+        <item name="android:layout_width">@dimen/zero</item>
+        <item name="android:layout_weight">3</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">end</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="ArticleDateStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textSize">@dimen/twelvestr</item>
+        <item name="android:paddingRight">@dimen/eight</item>
+    </style>
+
+    <style name="TimeStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textSize">@dimen/twelvestr</item>
+    </style>
+
+    <style name="ImageWrapperStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:weightSum">6</item>
+        <item name="android:paddingTop">@dimen/sixteen</item>
+        <item name="android:paddingBottom">@dimen/sixteen</item>
+    </style>
+
+    <style name="ImageListStyle">
+        <item name="android:layout_width">@dimen/zero</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:layout_height">@dimen/fifty</item>
+        <item name="android:paddingRight">@dimen/sixteen</item>
+        <item name="android:paddingTop">@dimen/four</item>
     </style>
 
     <style name="TitleStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:layout_margin">@dimen/ten</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:textSize">@dimen/fifteenstr</item>
-    </style>
-
-    <style name="InfoStyle">
         <item name="android:layout_width">@dimen/zero</item>
-        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_weight">4</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/sixteenstr</item>
     </style>
 
-    <style name="NewsStyle">
+    <style name="AuthorStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">@dimen/ten</item>
-        <item name="android:layout_marginRight">@dimen/ten</item>
-        <item name="android:layout_marginTop">@dimen/ten</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/sixteenstr</item>
+        <item name="android:paddingBottom">@dimen/sixteen</item>
+    </style>
+
+    <style name="EmptyStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
     </style>
 
     <style name="MatchParentStyle">

@@ -5,41 +5,87 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.squareup.picasso.Picasso;
 
-public class NewsAdapter extends ArrayAdapter<News> {
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
-    public NewsAdapter(Context context, ArrayList<News> news) {
+class NewsAdapter extends ArrayAdapter<News> {
+
+    public NewsAdapter(Context context, List<News> news) {
         super(context, 0, news);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View itemView = convertView;
-        if (itemView == null) {
-            itemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.item, parent, false);
+        View listView = convertView;
+        if (listView == null) {
+            listView = LayoutInflater.from(getContext()).inflate(
+                    R.layout.news_list, parent, false);
         }
 
-        News newsOnView = getItem(position);
-        TextView titleView = (TextView) itemView.findViewById(R.id.title_txt);
-        String title = newsOnView.getmArticleTitle();
-        titleView.setText(title);
+        News currentArticle = getItem(position);
 
-        TextView categoryView = (TextView) itemView.findViewById(R.id.category_txt);
-        String category = newsOnView.getmArticleCategory();
-        categoryView.setText(category);
+        ImageView illustrationView = listView.findViewById(R.id.illustration);
 
-        TextView dateView = (TextView) itemView.findViewById(R.id.date_txt);
-        String date = newsOnView.getmArticleDate();
-        dateView.setText(date);
+        Picasso.get().load(currentArticle.getArticleImage()).into(illustrationView);
 
-        TextView authorView = (TextView) itemView.findViewById(R.id.author_txt);
-        String author = newsOnView.getmArticleAuthor();
-        authorView.setText(author);
+        TextView articleTitleView = listView.findViewById(R.id.article_title);
 
-        return itemView;
+        articleTitleView.setText(currentArticle.getArticleTitle());
+
+        TextView articleSectionView = listView.findViewById(R.id.article_section);
+
+        articleSectionView.setText(currentArticle.getArticleSection());
+
+        TextView articleAuthorView = listView.findViewById(R.id.article_author);
+
+        if (currentArticle.getArticleAuthor() != "") {
+            articleAuthorView.setText(currentArticle.getArticleAuthor());
+
+            articleAuthorView.setVisibility(View.VISIBLE);
+        } else {
+
+            articleAuthorView.setVisibility(View.GONE);
+        }
+
+        TextView articleDateView = null;
+        TextView articleTimeView = null;
+        if (currentArticle.getArticleDate() != null) {
+            articleDateView = listView.findViewById(R.id.article_date);
+
+            String date_formatted = formatDate(currentArticle.getArticleDate()).concat(",");
+
+            articleDateView.setText(date_formatted);
+
+            articleTimeView = listView.findViewById(R.id.time);
+
+            String formattedTime = formatTime(currentArticle.getArticleDate());
+
+            articleTimeView.setText(formattedTime);
+
+            articleDateView.setVisibility(View.VISIBLE);
+            articleTimeView.setVisibility(View.VISIBLE);
+        } else {
+
+            articleDateView.setVisibility(View.GONE);
+            articleTimeView.setVisibility(View.GONE);
+        }
+
+        return listView;
+    }
+
+    private String formatDate(Date dateObject) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("LLL dd, yyyy");
+        return dateFormat.format(dateObject);
+    }
+
+    private String formatTime(Date dateObject) {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        return timeFormat.format(dateObject);
     }
 }
